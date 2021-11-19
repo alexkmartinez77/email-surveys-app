@@ -1,9 +1,12 @@
 const express = require('express');
-const app = express();
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
 const PORT = process.env.PORT || 5000;
-
-app.get('/', (req, res) => {
-  res.send({by: 'buddy'});
-});
-
+const app = express();
 app.listen(PORT);
+
+//passport handled authentication in general
+//passing in the googleStategy tells it to authenticate using the google Oath
+passport.use(new GoogleStrategy());
+
