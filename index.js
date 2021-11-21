@@ -3,7 +3,6 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const keys = require('./config/keys');
 
-const PORT = process.env.PORT || 5000;
 const app = express();
 
 //passport handled authentication in general
@@ -13,9 +12,20 @@ passport.use(
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
-  }, (accessToken) => console.log(accessToken))
+  }, 
+  accessToken => {
+    console.log(accessToken)
+  })
 );
 
+app.get(
+  '/auth/google', 
+  passport.authenticate('google', {
+  scope: ['profile', 'email'],
+  })
+);
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
 
 
